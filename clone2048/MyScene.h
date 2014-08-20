@@ -10,4 +10,7 @@
 
 @interface MyScene : SKScene
 
+@property SKShapeNode *board;
+@property int boardsize;
+
 @end
