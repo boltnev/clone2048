@@ -7,10 +7,15 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import "Board.h"
 
-@interface MyScene : SKScene
+@interface MyScene : SKScene{
+    UISwipeGestureRecognizer *swipeRightGesture;
+    UISwipeGestureRecognizer *swipeLeftGesture;
+    UISwipeGestureRecognizer *swipeUpGesture;
+    UISwipeGestureRecognizer *swipeDownGesture;
+}
 
-@property SKShapeNode *board;
-@property int boardsize;
+@property Board *board;
 
 @end

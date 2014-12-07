@@ -24,6 +24,8 @@
 		09ACE59C199FD44800D97AC8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09ACE574199FD44800D97AC8 /* UIKit.framework */; };
 		09ACE5A4199FD44800D97AC8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 09ACE5A2199FD44800D97AC8 /* InfoPlist.strings */; };
 		09ACE5A6199FD44800D97AC8 /* clone2048Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09ACE5A5199FD44800D97AC8 /* clone2048Tests.m */; };
+		09C9D6721A349B500020A442 /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C9D6711A349B500020A442 /* Piece.m */; };
+		09C9D6751A349B730020A442 /* Board.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C9D6741A349B730020A442 /* Board.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,10 @@
 		09ACE5A1199FD44800D97AC8 /* clone2048Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "clone2048Tests-Info.plist"; sourceTree = "<group>"; };
 		09ACE5A3199FD44800D97AC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		09ACE5A5199FD44800D97AC8 /* clone2048Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = clone2048Tests.m; sourceTree = "<group>"; };
+		09C9D6701A349B500020A442 /* Piece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
+		09C9D6711A349B500020A442 /* Piece.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Piece.m; sourceTree = "<group>"; };
+		09C9D6731A349B730020A442 /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
+		09C9D6741A349B730020A442 /* Board.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Board.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,10 @@
 		09ACE564199FD44800D97AC8 = {
 			isa = PBXGroup;
 			children = (
+				09C9D6701A349B500020A442 /* Piece.h */,
+				09C9D6711A349B500020A442 /* Piece.m */,
+				09C9D6731A349B730020A442 /* Board.h */,
+				09C9D6741A349B730020A442 /* Board.m */,
 				09ACE578199FD44800D97AC8 /* clone2048 */,
 				09ACE59F199FD44800D97AC8 /* clone2048Tests */,
 				09ACE56F199FD44800D97AC8 /* Frameworks */,
@@ -262,6 +272,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09C9D6751A349B730020A442 /* Board.m in Sources */,
+				09C9D6721A349B500020A442 /* Piece.m in Sources */,
 				09ACE58F199FD44800D97AC8 /* MyScene.m in Sources */,
 				09ACE58C199FD44800D97AC8 /* ViewController.m in Sources */,
 				09ACE583199FD44800D97AC8 /* AppDelegate.m in Sources */,
