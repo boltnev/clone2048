@@ -16,7 +16,7 @@
     if(self = [super init]){
         self->value = value;
         self.coords = coords;
-        self->sprite = sprite;
+        self.sprite = sprite;
         self->justCreated = YES;
     }
     return self;

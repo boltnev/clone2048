@@ -11,10 +11,10 @@
 
 @interface Piece : NSObject
 {
-    SKSpriteNode *sprite;
     int value;
     BOOL justCreated;
 }
+@property SKSpriteNode *sprite;
 @property CGPoint coords;
 
 - (id) initWithValue:(int) value Coords:(CGPoint) coords WithSprite:(SKSpriteNode *) sprite;

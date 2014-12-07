@@ -65,15 +65,19 @@
     switch(recognizer.direction){
         case UISwipeGestureRecognizerDirectionRight:
             NSLog(@"Right swipe");
+            [self.board rightMove];
             break;
         case UISwipeGestureRecognizerDirectionLeft:
             NSLog(@"Left swipe");
+            [self.board leftMove];
             break;
         case UISwipeGestureRecognizerDirectionUp:
             NSLog(@"Up swipe");
+            [self.board upMove];
             break;
         case UISwipeGestureRecognizerDirectionDown:
             NSLog(@"Down swipe");
+            [self.board downMove];
             break;
         default:
             NSLog(@"Unknown swipe");

@@ -23,5 +23,12 @@
 - (CGPoint) getPositionOnX: (int) i
                        onY: (int) j;
 
+- (void) rightMove;
+
+- (void) leftMove;
+
+- (void) upMove;
+
+- (void) downMove;
 
 @end

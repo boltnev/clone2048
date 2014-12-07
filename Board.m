@@ -152,5 +152,70 @@
     }
 }
 
+/* moves */
+
+- (void) coordsMoveA:(NSArray*)aCoords B:(NSArray*) bCoords Horizontal: (BOOL) horizontal{
+    __block CGPoint position;
+    __block Piece* currentPiece;
+
+    void (^moveRowOrCol)(NSNumber *i, NSNumber *j) = ^(NSNumber *i, NSNumber *j){
+        currentPiece = [self getPieceOnPositionX:i.intValue OnY:j.intValue];
+        if(currentPiece == nil){
+            if(position.x == -1 && position.y == -1){
+                position = [self getPositionOnX:i.intValue onY:j.intValue];
+            }
+        }
+        else{
+            if(position.x != -1 && position.y != -1){
+                SKAction *moveSquare = [SKAction moveTo:position duration:1];
+                [currentPiece.sprite runAction:moveSquare];
+                currentPiece.coords = position;
+            }
+            
+            position.x = position.y = -1;
+        }
+    };
+    
+    for (NSNumber *i in aCoords){
+        position.x = position.y = -1;
+        for(NSNumber *j in bCoords){
+            if(horizontal){
+                moveRowOrCol(j, i);
+            }
+            else{
+                moveRowOrCol(i, j);
+            }
+        }
+    }
+}
+
+- (void) rightMove{
+    NSArray *aCoords = @[@0, @1, @2, @3];
+    NSArray *bCoords = @[@3, @2, @1, @0];
+    [self coordsMoveA:aCoords B:bCoords Horizontal:YES];
+
+}
+
+
+- (void) leftMove{
+    NSArray *aCoords = @[@0, @1, @2, @3];
+    NSArray *bCoords = @[@0, @1, @2, @3];
+    [self coordsMoveA:aCoords B:bCoords Horizontal:YES];
+
+}
+
+- (void) upMove{
+    NSArray *aCoords = @[@3, @2, @1, @0];
+    NSArray *bCoords = @[@3, @2, @1, @0];
+    [self coordsMoveA:aCoords B:bCoords Horizontal:NO];
+}
+
+- (void) downMove{
+    NSArray *aCoords = @[@3, @2, @1, @0];
+    NSArray *bCoords = @[@0, @1, @2, @3];
+    [self coordsMoveA:aCoords B:bCoords Horizontal:NO];
+}
+
+
 
 @end
