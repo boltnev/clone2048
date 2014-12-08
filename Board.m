@@ -131,8 +131,6 @@
     
     int value = 0x1 << (arc4random() % 2 + 1);
 
-    NSLog([@(value) stringValue]);
-
     CGPoint position = [self getPositionOnX:i onY:j];
 
     [self placeSquareOnPosition: position withValue:value];
@@ -156,8 +154,9 @@
 
 - (void) coordsMoveA:(NSArray*)aCoords B:(NSArray*) bCoords Horizontal: (BOOL) horizontal{
     __block CGPoint position;
-    __block Piece* currentPiece;
-
+    __block Piece* currentPiece, *prevPiece;
+    __block BOOL createNewPiece = false;
+    
     void (^moveRowOrCol)(NSNumber *i, NSNumber *j) = ^(NSNumber *i, NSNumber *j){
         currentPiece = [self getPieceOnPositionX:i.intValue OnY:j.intValue];
         if(currentPiece == nil){
@@ -166,26 +165,45 @@
             }
         }
         else{
-            if(position.x != -1 && position.y != -1){
-                SKAction *moveSquare = [SKAction moveTo:position duration:1];
-                [currentPiece.sprite runAction:moveSquare];
-                currentPiece.coords = position;
+            if(prevPiece != nil){
+                if(prevPiece.value == currentPiece.value){
+                    currentPiece.coords = prevPiece.coords;
+                    SKAction *moveSquare = [SKAction moveTo:prevPiece.coords duration:1];
+                    [currentPiece.sprite runAction:moveSquare];                    
+                    createNewPiece = YES;
+                }
+            }
+            else{
+                if(position.x != -1 && position.y != -1){
+                    currentPiece.coords = position;
+                    SKAction *moveSquare = [SKAction moveTo:position duration:1];
+                    [currentPiece.sprite runAction:moveSquare];
+                    createNewPiece = YES;
+                }
+                prevPiece = currentPiece;
             }
             
             position.x = position.y = -1;
         }
     };
-    
-    for (NSNumber *i in aCoords){
-        position.x = position.y = -1;
-        for(NSNumber *j in bCoords){
-            if(horizontal){
-                moveRowOrCol(j, i);
-            }
-            else{
-                moveRowOrCol(i, j);
+
+    for(int k = 0; k < 4; k++ ){
+
+        for (NSNumber *i in aCoords){
+            prevPiece = nil;
+            position.x = position.y = -1;
+            for(NSNumber *j in bCoords){
+                if(horizontal){
+                    moveRowOrCol(j, i);
+                }
+                else{
+                    moveRowOrCol(i, j);
+                }
             }
         }
+    }
+    if(createNewPiece){
+        [self placeRandomSquare];
     }
 }
 

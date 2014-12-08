@@ -11,6 +11,8 @@
 @implementation Piece
 
 @synthesize coords;
+@synthesize sprite;
+@synthesize value;
 
 - (id) initWithValue:(int) value Coords:(CGPoint) coords WithSprite:(SKSpriteNode *)sprite{
     if(self = [super init]){

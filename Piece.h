@@ -11,9 +11,9 @@
 
 @interface Piece : NSObject
 {
-    int value;
     BOOL justCreated;
 }
+@property int value;
 @property SKSpriteNode *sprite;
 @property CGPoint coords;
 
