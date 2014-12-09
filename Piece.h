@@ -10,9 +10,8 @@
 #import <SpriteKit/SpriteKit.h>
 
 @interface Piece : NSObject
-{
-    BOOL justCreated;
-}
+
+@property BOOL justCreated;
 @property int value;
 @property SKSpriteNode *sprite;
 @property CGPoint coords;

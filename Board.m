@@ -41,6 +41,9 @@
         [self placeRandomSquare];
         [self placeRandomSquare];
 
+        for (Piece* p in self->pieces){
+            p.justCreated = NO;
+        }
 //
         [self->scene addChild:boardView];
         
@@ -69,6 +72,26 @@
             case 4:
                 label.fontSize = 40;
                 square.color = [SKColor colorWithRed:0.3 green:0.7 blue:0.7 alpha:1];
+                break;
+            case 8:
+                label.fontSize = 40;
+                square.color = [SKColor colorWithRed:0.7 green:0.5 blue:0.5 alpha:1];
+                break;
+            case 16:
+                label.fontSize = 40;
+                square.color = [SKColor colorWithRed:0.7 green:0.3 blue:0.3 alpha:1];
+                break;
+            case 32:
+                label.fontSize = 40;
+                square.color = [SKColor colorWithRed:0.3 green:0.06 blue:0.6 alpha:1];
+                break;
+            case 64:
+                label.fontSize = 40;
+                square.color = [SKColor colorWithRed:0.9 green:0.7 blue:0.7 alpha:1];
+                break;
+            case 128:
+                label.fontSize = 32;
+                square.color = [SKColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1];
                 break;
             default:
                 [NSException raise: @"Invalid square value" format: @"value %d is invalid", value];
@@ -150,6 +173,20 @@
     }
 }
 
+- (void) removePiece:(Piece*) piece{
+    [self->pieces removeObject:piece];
+    SKAction * sequence = [SKAction sequence:@[[SKAction waitForDuration:1], [SKAction removeFromParent]] ];
+    [piece.sprite runAction:sequence];
+}
+
+
+- (void) joinPiece:(Piece*) topPiece With:(Piece*) bottomPiece{
+    CGPoint position = topPiece.coords;
+    int value = topPiece.value * 2;
+    [self removePiece:bottomPiece];
+    [self removePiece:topPiece];
+    [self placeSquareOnPosition:position withValue:value];
+}
 /* moves */
 
 - (void) coordsMoveA:(NSArray*)aCoords B:(NSArray*) bCoords Horizontal: (BOOL) horizontal{
@@ -166,23 +203,22 @@
         }
         else{
             if(prevPiece != nil){
-                if(prevPiece.value == currentPiece.value){
-                    currentPiece.coords = prevPiece.coords;
+                if(prevPiece.value == currentPiece.value && ! (currentPiece.justCreated || prevPiece.justCreated)){
                     SKAction *moveSquare = [SKAction moveTo:prevPiece.coords duration:1];
-                    [currentPiece.sprite runAction:moveSquare];                    
-                    createNewPiece = YES;
-                }
-            }
-            else{
-                if(position.x != -1 && position.y != -1){
-                    currentPiece.coords = position;
-                    SKAction *moveSquare = [SKAction moveTo:position duration:1];
                     [currentPiece.sprite runAction:moveSquare];
+                    [self joinPiece:currentPiece With:prevPiece];
                     createNewPiece = YES;
+                    prevPiece = nil;
+                    return;
                 }
-                prevPiece = currentPiece;
             }
-            
+            if(!(position.x == -1 && position.y == -1)){
+                currentPiece.coords = position;
+                SKAction *moveSquare = [SKAction moveTo:position duration:1];
+                [currentPiece.sprite runAction:moveSquare];
+                createNewPiece = YES;
+            }
+            prevPiece = currentPiece;
             position.x = position.y = -1;
         }
     };
@@ -204,6 +240,9 @@
     }
     if(createNewPiece){
         [self placeRandomSquare];
+    }
+    for (Piece* p in self->pieces){
+        p.justCreated = NO;
     }
 }
 

@@ -10,16 +10,17 @@
 
 @implementation Piece
 
+@synthesize justCreated;
 @synthesize coords;
 @synthesize sprite;
 @synthesize value;
 
 - (id) initWithValue:(int) value Coords:(CGPoint) coords WithSprite:(SKSpriteNode *)sprite{
     if(self = [super init]){
-        self->value = value;
+        self.value = value;
         self.coords = coords;
         self.sprite = sprite;
-        self->justCreated = YES;
+        self.justCreated = YES;
     }
     return self;
 }
