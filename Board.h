@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "ViewController.h"
 #import "Piece.h"
+#import "DBManager.h"
+
+enum GAMESTATE{GAMEOVER, PLAYING};
 
 @interface Board : NSObject{
     SKScene *scene;
@@ -16,19 +19,21 @@
     SKShapeNode *boardView;
     
 }
+
 @property int boardsize;
+@property DBManager *db;
 
 -(id) initWithSize:(int) size WithScene:(SKScene*) scene;
 
 - (CGPoint) getPositionOnX: (int) i
                        onY: (int) j;
 
-- (void) rightMove;
+- (enum GAMESTATE) rightMove;
 
-- (void) leftMove;
+- (enum GAMESTATE) leftMove;
 
-- (void) upMove;
+- (enum GAMESTATE) upMove;
 
-- (void) downMove;
+- (enum GAMESTATE) downMove;
 
 @end

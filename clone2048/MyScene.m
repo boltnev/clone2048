@@ -18,26 +18,7 @@
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:1.0];
         self.board = [[Board alloc] initWithSize:self.size.width
-                                        WithScene:self];
-//
-//        board = [SKShapeNode node];
-//        
-//        boardsize = self.size.width - self.size.width * 0.1;
-//        
-//        CGRect boardshape = CGRectMake(-boardsize / 2,-boardsize / 2, boardsize, boardsize);
-//        
-//        [board setPath:CGPathCreateWithRoundedRect(boardshape, 15, 15, nil)];
-//        board.position = CGPointMake(self.size.width / 2, self.size.height / 2);
-//        board.strokeColor =  board.fillColor = [SKColor colorWithRed:255 / 255.0
-//                                                               green:207 / 255.0
-//                                                                blue:74 / 255.0
-//                                                               alpha:0.8];
-//        [self placeSquares];
-//        
-//        [self placeRandomSquare];
-//        
-//        [self addChild:board];
-        
+                                        WithScene:self];       
     }
     return self;
 }
@@ -62,25 +43,31 @@
 
 
 -(void) handleSwipe:(UISwipeGestureRecognizer *) recognizer{
+    enum GAMESTATE result;
     switch(recognizer.direction){
         case UISwipeGestureRecognizerDirectionRight:
             NSLog(@"Right swipe");
-            [self.board rightMove];
+            result = [self.board rightMove];
             break;
         case UISwipeGestureRecognizerDirectionLeft:
             NSLog(@"Left swipe");
-            [self.board leftMove];
+            result = [self.board leftMove];
             break;
         case UISwipeGestureRecognizerDirectionUp:
             NSLog(@"Up swipe");
-            [self.board upMove];
+            result = [self.board upMove];
             break;
         case UISwipeGestureRecognizerDirectionDown:
             NSLog(@"Down swipe");
-            [self.board downMove];
+            result = [self.board downMove];
             break;
         default:
             NSLog(@"Unknown swipe");
+    }
+    
+    if(result == GAMEOVER){
+        //show scores
+        NSLog(@"GAME OVER");
     }
 }
 

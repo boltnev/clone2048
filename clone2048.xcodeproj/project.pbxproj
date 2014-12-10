@@ -26,6 +26,9 @@
 		09ACE5A6199FD44800D97AC8 /* clone2048Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09ACE5A5199FD44800D97AC8 /* clone2048Tests.m */; };
 		09C9D6721A349B500020A442 /* Piece.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C9D6711A349B500020A442 /* Piece.m */; };
 		09C9D6751A349B730020A442 /* Board.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C9D6741A349B730020A442 /* Board.m */; };
+		09C9D6771A379EC80020A442 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 09C9D6761A379EC80020A442 /* libsqlite3.dylib */; };
+		09C9D67A1A379EE50020A442 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C9D6791A379EE50020A442 /* DBManager.m */; };
+		09C9D67C1A38278A0020A442 /* data.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 09C9D67B1A38278A0020A442 /* data.sqlite3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +69,10 @@
 		09C9D6711A349B500020A442 /* Piece.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Piece.m; sourceTree = "<group>"; };
 		09C9D6731A349B730020A442 /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
 		09C9D6741A349B730020A442 /* Board.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Board.m; sourceTree = "<group>"; };
+		09C9D6761A379EC80020A442 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		09C9D6781A379EE50020A442 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
+		09C9D6791A379EE50020A442 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
+		09C9D67B1A38278A0020A442 /* data.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09C9D6771A379EC80020A442 /* libsqlite3.dylib in Frameworks */,
 				09ACE573199FD44800D97AC8 /* CoreGraphics.framework in Frameworks */,
 				09ACE575199FD44800D97AC8 /* UIKit.framework in Frameworks */,
 				09ACE577199FD44800D97AC8 /* SpriteKit.framework in Frameworks */,
@@ -96,6 +104,9 @@
 		09ACE564199FD44800D97AC8 = {
 			isa = PBXGroup;
 			children = (
+				09C9D67B1A38278A0020A442 /* data.sqlite3 */,
+				09C9D6781A379EE50020A442 /* DBManager.h */,
+				09C9D6791A379EE50020A442 /* DBManager.m */,
 				09C9D6701A349B500020A442 /* Piece.h */,
 				09C9D6711A349B500020A442 /* Piece.m */,
 				09C9D6731A349B730020A442 /* Board.h */,
@@ -119,6 +130,7 @@
 		09ACE56F199FD44800D97AC8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				09C9D6761A379EC80020A442 /* libsqlite3.dylib */,
 				09ACE570199FD44800D97AC8 /* Foundation.framework */,
 				09ACE572199FD44800D97AC8 /* CoreGraphics.framework */,
 				09ACE574199FD44800D97AC8 /* UIKit.framework */,
@@ -251,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09ACE593199FD44800D97AC8 /* Images.xcassets in Resources */,
+				09C9D67C1A38278A0020A442 /* data.sqlite3 in Resources */,
 				09ACE589199FD44800D97AC8 /* Main_iPad.storyboard in Resources */,
 				09ACE586199FD44800D97AC8 /* Main_iPhone.storyboard in Resources */,
 				09ACE57D199FD44800D97AC8 /* InfoPlist.strings in Resources */,
@@ -272,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09C9D67A1A379EE50020A442 /* DBManager.m in Sources */,
 				09C9D6751A349B730020A442 /* Board.m in Sources */,
 				09C9D6721A349B500020A442 /* Piece.m in Sources */,
 				09ACE58F199FD44800D97AC8 /* MyScene.m in Sources */,

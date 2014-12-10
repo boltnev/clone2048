@@ -11,13 +11,15 @@
 
 @implementation Board
 @synthesize boardsize;
-
+@synthesize db;
 
 
 - (id) initWithSize:(int) size WithScene:(SKScene*) scene{
     if (self = [super init]) {
         self->scene = scene;
         /* Setup your scene here */
+        
+        self.db = [[DBManager alloc] initWithDatabaseFilename:@"data.sqlite3"];
         
         self->pieces = [[NSMutableArray alloc ] init];
         
@@ -46,7 +48,6 @@
         }
 //
         [self->scene addChild:boardView];
-        
     }
     return self;
 }
@@ -93,13 +94,45 @@
                 label.fontSize = 32;
                 square.color = [SKColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1];
                 break;
+            case 256:
+                label.fontSize = 32;
+                square.color = [SKColor colorWithRed:1.0 green:0.5 blue:0.5 alpha:1];
+                break;
+            case 512:
+                label.fontSize = 32;
+                square.color = [SKColor colorWithRed:0.5 green:1.0 blue:0.5 alpha:1];
+                break;
+            case 1024:
+                label.fontSize = 28;
+                square.color = [SKColor colorWithRed:0.5 green:0.5 blue:1.0 alpha:1];
+                break;
+            case 2048:
+                label.fontSize = 28;
+                square.color = [SKColor colorWithRed:0.1 green:0.5 blue:0.1 alpha:1];
+                break;
+            case 4096:
+                label.fontSize = 28;
+                square.color = [SKColor colorWithRed:0.2 green:0.7 blue:0.6 alpha:1];
+                break;
+            case 8192:
+                label.fontSize = 28;
+                square.color = [SKColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1];
+                break;
+            case 16384:
+                label.fontSize = 24;
+                square.color = [SKColor colorWithRed:0.1 green:0.8 blue:0.3 alpha:1];
+                break;
+            case 32768:
+                label.fontSize = 24;
+                square.color = [SKColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1];
+                break;
             default:
                 [NSException raise: @"Invalid square value" format: @"value %d is invalid", value];
         }
         
         NSLog(@"%@", NSStringFromCGPoint(position));
         
-        label.position = CGPointMake(0, - (size - label.fontSize) / 2 );
+        label.position = CGPointMake(0, - (size - 40 /*label.fontSize*/) / 2 );
         [square addChild: label];
     }
     Piece* newPeace = [[Piece alloc] initWithValue:value Coords:position WithSprite:square];
@@ -162,7 +195,6 @@
 
 
 - (void) placeDefaultSquares{
-
     for(int i = 0; i < 4;  i++){
 
         for(int j = 0; j < 4; j++){
@@ -189,11 +221,65 @@
 }
 /* moves */
 
-- (void) coordsMoveA:(NSArray*)aCoords B:(NSArray*) bCoords Horizontal: (BOOL) horizontal{
+- (NSMutableArray *) neibPiecesToX:(int) i ToY:(int) j{
+    NSMutableArray * result = [[NSMutableArray alloc ] init];
+    Piece* currentPiece;
+    if(i - 1 >= 0){
+        currentPiece =[self getPieceOnPositionX:i-1 OnY:j];
+        if(currentPiece != nil){
+            [result addObject:currentPiece];
+        }
+    }
+    if(i + 1 <= 3){
+        currentPiece =[self getPieceOnPositionX:i+1 OnY:j];
+        if(currentPiece != nil){
+            [result addObject:currentPiece];
+        }
+    }
+    if(j + 1 <= 3){
+        currentPiece =[self getPieceOnPositionX:i OnY:j+1];
+        if(currentPiece != nil){
+            [result addObject:currentPiece];
+        }
+    }
+    if(j - 1 <= 3){
+        currentPiece =[self getPieceOnPositionX:i OnY:j-1];
+        if(currentPiece != nil){
+            [result addObject:currentPiece];
+        }
+    }
+    return result;
+}
+
+- (BOOL) movesAvailable{
+    for(int i = 0; i < 4;  i++){
+        for(int j = 0; j < 4; j++){
+            Piece * current = [self getPieceOnPositionX:i OnY:j];
+            if(current == nil){
+                return YES;
+            }
+            else{
+                for(Piece *neib in [self neibPiecesToX:i ToY:j]){
+                    if(neib.value == current.value){
+                        return YES;
+                    }
+                }
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (enum GAMESTATE) coordsMoveA:(NSArray*)aCoords B:(NSArray*) bCoords Horizontal: (BOOL) horizontal{
     __block CGPoint position;
     __block Piece* currentPiece, *prevPiece;
     __block BOOL createNewPiece = false;
     
+    if (![self movesAvailable]) {
+        return GAMEOVER;
+    }
+    /* move in one Row */
     void (^moveRowOrCol)(NSNumber *i, NSNumber *j) = ^(NSNumber *i, NSNumber *j){
         currentPiece = [self getPieceOnPositionX:i.intValue OnY:j.intValue];
         if(currentPiece == nil){
@@ -244,33 +330,38 @@
     for (Piece* p in self->pieces){
         p.justCreated = NO;
     }
+    if ([self movesAvailable]) {
+        return PLAYING;
+    }else{
+     	return GAMEOVER;
+    }
 }
 
-- (void) rightMove{
+
+- (enum GAMESTATE) rightMove{
     NSArray *aCoords = @[@0, @1, @2, @3];
     NSArray *bCoords = @[@3, @2, @1, @0];
-    [self coordsMoveA:aCoords B:bCoords Horizontal:YES];
-
+    return [self coordsMoveA:aCoords B:bCoords Horizontal:YES];
 }
 
 
-- (void) leftMove{
+- (enum GAMESTATE) leftMove{
     NSArray *aCoords = @[@0, @1, @2, @3];
     NSArray *bCoords = @[@0, @1, @2, @3];
-    [self coordsMoveA:aCoords B:bCoords Horizontal:YES];
+    return [self coordsMoveA:aCoords B:bCoords Horizontal:YES];
 
 }
 
-- (void) upMove{
+- (enum GAMESTATE) upMove{
     NSArray *aCoords = @[@3, @2, @1, @0];
     NSArray *bCoords = @[@3, @2, @1, @0];
-    [self coordsMoveA:aCoords B:bCoords Horizontal:NO];
+    return [self coordsMoveA:aCoords B:bCoords Horizontal:NO];
 }
 
-- (void) downMove{
+- (enum GAMESTATE) downMove{
     NSArray *aCoords = @[@3, @2, @1, @0];
     NSArray *bCoords = @[@0, @1, @2, @3];
-    [self coordsMoveA:aCoords B:bCoords Horizontal:NO];
+    return [self coordsMoveA:aCoords B:bCoords Horizontal:NO];
 }
 
 
