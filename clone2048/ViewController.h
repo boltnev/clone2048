@@ -12,4 +12,6 @@
 
 @interface ViewController : UIViewController
 
+- (void)restartGame;
+
 @end
