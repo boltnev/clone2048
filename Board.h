@@ -7,18 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ViewController.h"
 #import "Piece.h"
+#import <SpriteKit/SpriteKit.h>
 #import "DBManager.h"
 
 enum GAMESTATE{GAMEOVER, PLAYING};
+@class MyScene;
 
 @interface Board : NSObject{
-    SKScene *scene;
+    MyScene *scene;
     NSMutableArray *pieces;
     SKShapeNode *boardView;
-    
 }
+
+@property int currentScore;
+@property int currentValue;
+
+@property int maxScore;
+@property int maxValue;
 
 @property int boardsize;
 @property DBManager *db;

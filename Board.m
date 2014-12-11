@@ -7,6 +7,7 @@
 //
 
 #import "Board.h"
+#import "MyScene.h"
 
 
 @implementation Board
@@ -14,10 +15,15 @@
 @synthesize db;
 
 
-- (id) initWithSize:(int) size WithScene:(SKScene*) scene{
+- (id) initWithSize:(int) size WithScene:(MyScene*) scene{
     if (self = [super init]) {
         self->scene = scene;
         /* Setup your scene here */
+        
+        self.currentScore = 0;
+        self.currentValue = 0;
+        
+        [self getMaxScores];
         
         self.db = [[DBManager alloc] initWithDatabaseFilename:@"data.sqlite3"];
         
@@ -38,8 +44,6 @@
                                                                 blue:74 / 255.0
                                                                alpha:0.8];
         [self placeDefaultSquares];
-//        [self placeSquares];
-//        
         [self placeRandomSquare];
         [self placeRandomSquare];
 
@@ -50,6 +54,11 @@
         [self->scene addChild:boardView];
     }
     return self;
+}
+
+- (void) getMaxScores{
+    self.maxValue = 0;
+    self.maxScore = 0;
 }
 
 
@@ -211,10 +220,21 @@
     [piece.sprite runAction:sequence];
 }
 
+- (void) addValueToScore:(int) value{
+    self.currentScore += value;
+    if(value > self.currentValue){
+        self.currentValue = value;
+    }
+    
+    int displayScore = MAX(self.currentScore, self.maxScore);
+    int displayValue = MAX(self.currentValue, self.maxValue);
+    [self->scene showScore:displayScore Value:displayValue];
+}
 
 - (void) joinPiece:(Piece*) topPiece With:(Piece*) bottomPiece{
     CGPoint position = topPiece.coords;
     int value = topPiece.value * 2;
+    [self addValueToScore:value];
     [self removePiece:bottomPiece];
     [self removePiece:topPiece];
     [self placeSquareOnPosition:position withValue:value];

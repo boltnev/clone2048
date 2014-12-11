@@ -14,8 +14,12 @@
     UISwipeGestureRecognizer *swipeLeftGesture;
     UISwipeGestureRecognizer *swipeUpGesture;
     UISwipeGestureRecognizer *swipeDownGesture;
+    SKShapeNode *scorePlace;
+    SKShapeNode *valuePlace;
 }
 
 @property Board *board;
+
+- (void) showScore:(int) score Value:(int) value;
 
 @end
