@@ -23,9 +23,7 @@
 
 -(void) prepareSelf:(CGSize)size{
     self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:1.0];
-    self.board = [[Board alloc] initWithSize:self.size.width
-                                   WithScene:self];
-    
+
     /* score windows */
     
     SKLabelNode* scorePlaceLabel = [[SKLabelNode alloc] init];
@@ -73,6 +71,10 @@
     restartButtonLabel.position = CGPointMake(self.size.width * 0.2, self.size.height * 0.035);
     [restartButton addChild:restartButtonLabel];
     [self addChild: restartButton];
+    
+    self.board = [[Board alloc] initWithSize:self.size.width
+                                   WithScene:self];
+    
 }
 
 -(void) didMoveToView:(SKView *)view{
@@ -147,6 +149,7 @@
     //if fire button touched, bring the rain
     if ([node.name isEqualToString:@"restartButton"]) {
         [self.scene removeAllChildren];
+        [self.board storeScores];
         [self prepareSelf:self.size];
     }
 }

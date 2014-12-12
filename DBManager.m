@@ -121,6 +121,7 @@
                 // This is the case of an executable query (insert, update, ...).
                 
                 // Execute the query.
+                NSLog(@"DB executing: %s", query);
                 int executeQueryResults = sqlite3_step(compiledStatement);
                 if (executeQueryResults == SQLITE_DONE) {
                     // Keep the affected rows.

@@ -23,10 +23,12 @@
         self.currentScore = 0;
         self.currentValue = 0;
         
-        [self getMaxScores];
         
         self.db = [[DBManager alloc] initWithDatabaseFilename:@"data.sqlite3"];
-        
+        [self getMaxScores];
+        [self addValueToScore:0];
+
+
         self->pieces = [[NSMutableArray alloc ] init];
         
         self->scene.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.15 alpha:1.0];
@@ -59,6 +61,18 @@
 - (void) getMaxScores{
     self.maxValue = 0;
     self.maxScore = 0;
+    [self.db runQuery:[@"select max(score) from Scores" UTF8String]  isQueryExecutable:NO];
+    for(int i=0; i < self.db.arrResults.count; i++){
+        NSMutableArray * resultsRow = [self.db.arrResults objectAtIndex:i];
+        NSString * maxScoreStr = [resultsRow objectAtIndex:i];
+        self.maxScore = [maxScoreStr intValue];
+    }
+    [self.db runQuery:[@"select max(max_piece) from Scores" UTF8String] isQueryExecutable:NO];
+    for(int i=0; i < self.db.arrResults.count; i++){
+        NSMutableArray * resultsRow = [self.db.arrResults objectAtIndex:i];
+        NSString * maxValueStr = [resultsRow objectAtIndex:i];
+        self.maxValue = [maxValueStr intValue];
+    }
 }
 
 
@@ -216,7 +230,7 @@
 
 - (void) removePiece:(Piece*) piece{
     [self->pieces removeObject:piece];
-    SKAction * sequence = [SKAction sequence:@[[SKAction waitForDuration:1], [SKAction removeFromParent]] ];
+    SKAction * sequence = [SKAction sequence:@[[SKAction waitForDuration:0.2], [SKAction removeFromParent]] ];
     [piece.sprite runAction:sequence];
 }
 
@@ -291,6 +305,12 @@
     return NO;
 }
 
+- (void) storeScores{
+    NSString * query = [NSString stringWithFormat: @"INSERT INTO Scores (score, max_piece) VALUES (%d, %d)",
+                        self.currentScore, self.currentValue];
+    [self.db runQuery: [query UTF8String]  isQueryExecutable:YES];
+}
+
 - (enum GAMESTATE) coordsMoveA:(NSArray*)aCoords B:(NSArray*) bCoords Horizontal: (BOOL) horizontal{
     __block CGPoint position;
     __block Piece* currentPiece, *prevPiece;
@@ -310,7 +330,7 @@
         else{
             if(prevPiece != nil){
                 if(prevPiece.value == currentPiece.value && ! (currentPiece.justCreated || prevPiece.justCreated)){
-                    SKAction *moveSquare = [SKAction moveTo:prevPiece.coords duration:1];
+                    SKAction *moveSquare = [SKAction moveTo:prevPiece.coords duration:0.2];
                     [currentPiece.sprite runAction:moveSquare];
                     [self joinPiece:currentPiece With:prevPiece];
                     createNewPiece = YES;
@@ -320,7 +340,7 @@
             }
             if(!(position.x == -1 && position.y == -1)){
                 currentPiece.coords = position;
-                SKAction *moveSquare = [SKAction moveTo:position duration:1];
+                SKAction *moveSquare = [SKAction moveTo:position duration:0.2];
                 [currentPiece.sprite runAction:moveSquare];
                 createNewPiece = YES;
             }

@@ -42,4 +42,6 @@ enum GAMESTATE{GAMEOVER, PLAYING};
 
 - (enum GAMESTATE) downMove;
 
+- (void) storeScores;
+
 @end
